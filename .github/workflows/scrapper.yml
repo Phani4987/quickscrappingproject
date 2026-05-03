@@ -1,31 +1,24 @@
-name: Run Scraper
+name: Scraper CI
 
 on:
-  workflow_dispatch:   # manual click trigger
+  push:
+    branches: [ main ]
 
 jobs:
-  scrape:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
       - name: Install dependencies
-        run: |
-          npm install
-          npx playwright install --with-deps
+        run: npm install
 
       - name: Run scraper
-        run: node scraper.js
-
-      - name: Upload output file
-        uses: actions/upload-artifact@v4
-        with:
-          name: results
-          path: search_results.xlsx
+        run: node scrapper.js
